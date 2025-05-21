@@ -45,6 +45,8 @@ Understanding context – the "why" behind information – is essential for AGI:
 - Integration of cultural, historical, and personal contexts
 - Predictive frameworks that anticipate information needs based on contextual signals
 
+![Mindflow AGI Architecture](https://i.imgur.com/lFpCzfT.png)
+
 ## Our Current Progress and Milestones
 
 Our journey toward AGI follows a progressive development path:
