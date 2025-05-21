@@ -79,10 +79,16 @@ export function getSortedPostsData(): BlogPost[] {
   });
 }
 
-export function getAllPostIds() {
-  const fileNames = fs.readdirSync(postsDirectory);
+type StaticParam = {
+  date: string;
+  slug: string;
+};
 
-  return fileNames.map((fileName) => {
+export function getAllPostIds(): StaticParam[] {
+  const fileNames = fs.readdirSync(postsDirectory);
+  const params: StaticParam[] = [];
+
+  fileNames.forEach((fileName) => {
     const dateMatch = fileName.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$/);
     
     if (dateMatch) {
@@ -91,18 +97,20 @@ export function getAllPostIds() {
       const day = dateMatch[3];
       const slug = dateMatch[4];
       
-      return {
+      params.push({
         date: `${year}-${month}-${day}`,
         slug: slug,
-      };
+      });
+    } else {
+      // Fallback for files that don't match the pattern
+      params.push({
+        date: 'unknown',
+        slug: fileName.replace(/\.md$/, ''),
+      });
     }
-    
-    // Fallback for files that don't match the pattern
-    return {
-      date: 'unknown',
-      slug: fileName.replace(/\.md$/, ''),
-    };
   });
+  
+  return params;
 }
 
 export async function getPostData(date: string, slug: string): Promise<BlogPost | null> {

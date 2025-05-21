@@ -2,16 +2,21 @@ import { getAllPostIds, getPostData } from '@/lib/blog';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+// This is the correct format for Next.js 15 generateStaticParams
 export function generateStaticParams() {
   return getAllPostIds();
 }
 
-export default async function BlogPost({
-  params,
-}: {
-  params: { date: string; slug: string };
-}) {
-  const postData = await getPostData(params.date, params.slug);
+type BlogPostProps = {
+  params: {
+    date: string;
+    slug: string;
+  };
+};
+
+export default async function BlogPost({ params }: BlogPostProps) {
+  const { date, slug } = params;
+  const postData = await getPostData(date, slug);
   
   if (!postData) {
     notFound();
