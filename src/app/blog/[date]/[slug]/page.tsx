@@ -2,9 +2,8 @@ import { getAllPostIds, getPostData } from '@/lib/blog';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-export async function generateStaticParams() {
-  const paths = getAllPostIds();
-  return paths;
+export function generateStaticParams() {
+  return getAllPostIds();
 }
 
 export default async function BlogPost({

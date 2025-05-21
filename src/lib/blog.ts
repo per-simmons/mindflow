@@ -92,19 +92,15 @@ export function getAllPostIds() {
       const slug = dateMatch[4];
       
       return {
-        params: {
-          date: `${year}-${month}-${day}`,
-          slug: slug,
-        },
+        date: `${year}-${month}-${day}`,
+        slug: slug,
       };
     }
     
     // Fallback for files that don't match the pattern
     return {
-      params: {
-        date: 'unknown',
-        slug: fileName.replace(/\.md$/, ''),
-      },
+      date: 'unknown',
+      slug: fileName.replace(/\.md$/, ''),
     };
   });
 }
