@@ -37,7 +37,7 @@ export function getSortedPostsData(): BlogPost[] {
 
     // Parse the date from the file name (format: YYYY-MM-DD-slug.md)
     const dateMatch = fileName.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$/);
-    let date = matterResult.data.date || '';
+    const date = matterResult.data.date || '';
     let slug = '';
     let year = '';
     let month = '';

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+
 
 export default function WaitlistPage() {
   return (
@@ -91,7 +91,7 @@ export default function WaitlistPage() {
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
               />
               <label htmlFor="early-access" className="ml-2 block text-sm text-gray-900">
-                I'd like to be considered for early access
+                I&apos;d like to be considered for early access
               </label>
             </div>
 
