@@ -46,7 +46,11 @@ export default async function BlogPost({ params }: Props) {
             </span>
           </div>
           
-          <div className="mt-10 prose prose-lg prose-indigo max-w-none" dangerouslySetInnerHTML={{ __html: postData.content }} />
+          <div 
+            className="mt-10 prose prose-lg prose-indigo max-w-none text-gray-800 leading-relaxed" 
+            style={{ fontSize: '18px', lineHeight: '1.8', fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif' }}
+            dangerouslySetInnerHTML={{ __html: postData.content }} 
+          />
         </div>
       </article>
     </div>
