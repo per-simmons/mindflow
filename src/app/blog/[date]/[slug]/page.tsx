@@ -7,14 +7,16 @@ export function generateStaticParams() {
   return getAllPostIds();
 }
 
-type BlogPostProps = {
+// Next.js 15 expects this specific interface for page components
+type Props = {
   params: {
     date: string;
     slug: string;
   };
+  searchParams: Record<string, string | string[] | undefined>;
 };
 
-export default async function BlogPost({ params }: BlogPostProps) {
+export default async function BlogPost({ params }: Props) {
   const { date, slug } = params;
   const postData = await getPostData(date, slug);
   
