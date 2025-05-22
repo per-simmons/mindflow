@@ -22,8 +22,22 @@ export type BlogPost = {
 };
 
 export function getSortedPostsData(): BlogPost[] {
-  // Get file names under /content/blog
-  const fileNames = fs.readdirSync(postsDirectory);
+  // Check if the directory exists first
+  if (!fs.existsSync(postsDirectory)) {
+    // Return an empty array if the directory doesn't exist
+    return [];
+  }
+  
+  // Try to read the directory, return empty array if it fails
+  let fileNames: string[] = [];
+  try {
+    // Get file names under /content/blog
+    fileNames = fs.readdirSync(postsDirectory);
+  } catch (error) {
+    console.error('Error reading blog directory:', error);
+    return [];
+  }
+  
   const allPostsData = fileNames.map((fileName) => {
     // Remove ".md" from file name to get id
     const id = fileName.replace(/\.md$/, '');
@@ -85,7 +99,21 @@ type StaticParam = {
 };
 
 export function getAllPostIds(): StaticParam[] {
-  const fileNames = fs.readdirSync(postsDirectory);
+  // Check if the directory exists first
+  if (!fs.existsSync(postsDirectory)) {
+    // Return an empty array if the directory doesn't exist
+    return [];
+  }
+  
+  // Try to read the directory, return empty array if it fails
+  let fileNames: string[] = [];
+  try {
+    fileNames = fs.readdirSync(postsDirectory);
+  } catch (error) {
+    console.error('Error reading blog directory:', error);
+    return [];
+  }
+  
   const params: StaticParam[] = [];
 
   fileNames.forEach((fileName) => {
@@ -114,7 +142,20 @@ export function getAllPostIds(): StaticParam[] {
 }
 
 export async function getPostData(date: string, slug: string): Promise<BlogPost | null> {
-  const fileNames = fs.readdirSync(postsDirectory);
+  // Check if the directory exists first
+  if (!fs.existsSync(postsDirectory)) {
+    return null;
+  }
+  
+  // Try to read the directory
+  let fileNames: string[] = [];
+  try {
+    fileNames = fs.readdirSync(postsDirectory);
+  } catch (error) {
+    console.error('Error reading blog directory:', error);
+    return null;
+  }
+  
   const fileName = fileNames.find(file => file.includes(slug) && file.includes(date));
   
   if (!fileName) {
@@ -123,7 +164,14 @@ export async function getPostData(date: string, slug: string): Promise<BlogPost 
   
   const id = fileName.replace(/\.md$/, '');
   const fullPath = path.join(postsDirectory, fileName);
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  
+  let fileContents: string;
+  try {
+    fileContents = fs.readFileSync(fullPath, 'utf8');
+  } catch (error) {
+    console.error(`Error reading file ${fullPath}:`, error);
+    return null;
+  }
 
   // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents);
