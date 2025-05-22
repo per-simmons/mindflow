@@ -63,7 +63,11 @@ export function getSortedPostsData(): BlogPost[] {
       day = dateMatch[3];
       slug = dateMatch[4];
     } else {
-      // If filename doesn't match the pattern, use the id as slug
+      // If filename doesn't match the pattern, use today's date and the id as slug
+      const today = new Date();
+      year = today.getFullYear().toString();
+      month = (today.getMonth() + 1).toString().padStart(2, '0');
+      day = today.getDate().toString().padStart(2, '0');
       slug = id;
     }
 
@@ -131,8 +135,14 @@ export function getAllPostIds(): StaticParam[] {
       });
     } else {
       // Fallback for files that don't match the pattern
+      // Use today's date for files without a date prefix
+      const today = new Date();
+      const year = today.getFullYear().toString();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      
       params.push({
-        date: 'unknown',
+        date: `${year}-${month}-${day}`,
         slug: fileName.replace(/\.md$/, ''),
       });
     }
@@ -156,7 +166,13 @@ export async function getPostData(date: string, slug: string): Promise<BlogPost 
     return null;
   }
   
-  const fileName = fileNames.find(file => file.includes(slug) && file.includes(date));
+  // Try to find a file with both date and slug
+  let fileName = fileNames.find(file => file.includes(slug) && file.includes(date));
+  
+  // If not found, try to find a file with just the slug (for files without date prefix)
+  if (!fileName) {
+    fileName = fileNames.find(file => file === `${slug}.md` || file.endsWith(`-${slug}.md`));
+  }
   
   if (!fileName) {
     return null;
